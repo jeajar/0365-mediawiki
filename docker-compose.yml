@@ -12,8 +12,8 @@ services:
       - default
       - traefik_proxy
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -48,6 +48,8 @@ services:
     networks:
       - default
       - traefik_proxy
+    ports:
+      - "80"
     environment:
       - WIKI_PATH=${WIKI_PATH}
       - SIMPLESAML_PATH=${SIMPLESAML_PATH}
@@ -55,20 +57,21 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
     volumes:
-    - ${DOCKERDIR}/mediawiki/images:/var/www/html/wiki/images
+    - ${DOCKERDIR}/mediawiki-o365/images:/var/www/html/wiki/images
     labels:
       - "traefik.enable=true"
       - "traefik.backend=wiki"
       - "traefik.frontend.rule=Host:wiki.${DOMAINNAME}"
-      - "traefik.port=9000"
+      - "traefik.port=80"
       - "traefik.docker.network=traefik_proxy"
       - "traefik.frontend.headers.SSLRedirect=true"
       - "traefik.frontend.headers.STSSeconds=315360000"
       - "traefik.frontend.headers.browserXSSFilter=true"
       - "traefik.frontend.headers.contentTypeNosniff=true"
+      - "traefik.frontend.headers.contentSecurityPolicy=upgrade-insecure-requests"
       - "traefik.frontend.headers.forceSTSHeader=true"
       - "traefik.frontend.headers.SSLHost=jean-max.com"
-      - "traefik.frontend.headers.STSIncluSubdomains=tue"
+      - "traefik.frontend.headers.STSIncluSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=true"
 

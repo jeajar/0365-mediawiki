@@ -10,10 +10,6 @@ COPY simplesamlphp/config/config.php /var/simplesamlphp/config/
 COPY simplesamlphp/config/authsources.php /var/simplesamlphp/config/
 COPY simplesamlphp/metadata/saml20-idp-remote.php /var/simplesamlphp/metadata/
 
-# RUN cd /var/simplesamlphp && \
-#     cp -r config-templates/acl.php config/acl.php && \
-#     cp -r metadata-templates/* metadata/
-
 RUN mkdir /tmp/backup && \
     mv /var/www/html/* /tmp/backup && \
     mkdir /var/www/html/wiki && \
@@ -27,10 +23,13 @@ RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/SimpleSAMLphp-REL1
     tar -xzf SimpleSAMLphp-REL1_34-e6154d8.tar.gz -C /var/www/html/wiki/extensions && \
     rm -rf /var/www/html/SimpleSAMLphp-REL1_34-e6154d8.tar.gz
 
+COPY LocalSettings.php /var/www/html/wiki/
+
 RUN ln -s /var/simplesamlphp/www /var/www/html/simplesamlphp
 
 RUN mkdir /var/simplesamlphp/data/db && \
     chown www-data:www-data /var/simplesamlphp/data/db
 
+COPY assets/difuze_logo-only.png /var/www/html/wiki/resources/assets/wiki.png
 COPY html/index.php /var/www/html/index.php
 COPY etc/apache2/conf-available/docker-php.conf /etc/apache2/conf-available/docker-php.conf

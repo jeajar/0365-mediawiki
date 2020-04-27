@@ -30,7 +30,9 @@ $wgMetaNamespace = "JMAX_wiki";
 $wgScriptPath = "/wiki";
 
 ## The protocol and server name to use in fully-qualified URLs
-$wgServer = "https://wiki.jean-max.com";
+$wgServer = "//wiki.jean-max.com";
+#$wgCanonicalServer = "https://wiki.jean-max.com";
+$wgCacheEpoch = max( $wgCacheEpoch, gmdate( 'YmdHis', @filemtime( __FILE__ ) ) );
 
 ## The URL path to static resources (images, scripts, etc.)
 $wgResourceBasePath = $wgScriptPath;
@@ -65,7 +67,7 @@ $wgDBprefix = "";
 $wgDBTableOptions = "ENGINE=InnoDB, DEFAULT CHARSET=binary";
 
 ## Shared memory settings
-$wgMainCacheType = CACHE_ACCEL;
+$wgMainCacheType = CACHE_DB;
 $wgMemCachedServers = [];
 
 ## To enable image uploads, make sure the 'images' directory
@@ -116,7 +118,7 @@ $wgRightsIcon = "";
 $wgDiff3 = "/usr/bin/diff3";
 
 # The following permissions were set based on your choice in the installer
-$wgGroupPermissions['*']['createaccount'] = false;
+$wgGroupPermissions['*']['createaccount'] = true;
 $wgGroupPermissions['*']['autocreateaccount'] = true;
 $wgGroupPermissions['*']['edit'] = false;
 $wgGroupPermissions['user']['edit'] = true;
@@ -150,13 +152,15 @@ wfLoadExtension( 'SimpleSAMLphp' );
 $wgSimpleSAMLphp_InstallDir = "/var/simplesamlphp/";
 $wgSimpleSAMLphp_AuthSourceId = 'default-sp';
 
-$wgSimpleSAMLphp_UsernameAttribute = ['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname','http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'];
+$wgSimpleSAMLphp_UsernameAttribute = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
 $wgSimpleSAMLphp_EmailAttribute = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
 $wgSimpleSAMLphp_RealNameAttribute = [
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'
 ];
+$wgInvalidUsernameCharacters = '';
 
+#$wgWhitelistRead = array( 'Special:CreateAccount' );
 wfLoadExtension( 'WikiEditor' );
 
 
