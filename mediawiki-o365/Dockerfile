@@ -23,6 +23,10 @@ RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/SimpleSAMLphp-REL1
     tar -xzf SimpleSAMLphp-REL1_34-e6154d8.tar.gz -C /var/www/html/wiki/extensions && \
     rm -rf /var/www/html/SimpleSAMLphp-REL1_34-e6154d8.tar.gz
 
+RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/TemplateData-REL1_34-b9ccaf6.tar.gz', 'TemplateData-REL1_34-b9ccaf6.tar.gz');" && \
+tar -xzf TemplateData-REL1_34-b9ccaf6.tar.gz -C /var/www/html/wiki/extensions && \
+rm -rf TemplateData-REL1_34-b9ccaf6.tar.gz
+
 COPY LocalSettings.php /var/www/html/wiki/
 
 RUN ln -s /var/simplesamlphp/www /var/www/html/simplesamlphp

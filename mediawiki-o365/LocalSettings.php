@@ -162,6 +162,7 @@ $wgInvalidUsernameCharacters = '';
 
 #$wgWhitelistRead = array( 'Special:CreateAccount' );
 wfLoadExtension( 'WikiEditor' );
+wfLoadExtension( 'TemplateData' );
 
 
 # End of automatically generated settings.
