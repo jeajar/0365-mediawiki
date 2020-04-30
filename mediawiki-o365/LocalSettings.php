@@ -75,7 +75,7 @@ $wgMemCachedServers = [];
 $wgEnableUploads = true;
 $wgUseImageMagick = true;
 $wgImageMagickConvertCommand = "/usr/bin/convert";
-$wgFileExtensions = array( 'png', 'gif', 'jpg', 'jpeg', 'pdf', 'bmp', 'webp');
+$wgFileExtensions = array( 'png', 'svg', 'gif', 'jpg', 'jpeg', 'pdf', 'bmp', 'webp');
 
 # InstantCommons allows wiki to use images from https://commons.wikimedia.org
 $wgUseInstantCommons = false;
@@ -121,7 +121,6 @@ $wgDiff3 = "/usr/bin/diff3";
 # The following permissions were set based on your choice in the installer
 $wgGroupPermissions['*']['createaccount'] = true;
 $wgGroupPermissions['*']['autocreateaccount'] = true;
-$wgGroupPermissions['sysop']['interwiki'] = true;
 $wgGroupPermissions['*']['edit'] = false;
 $wgGroupPermissions['user']['edit'] = true;
 $wgGroupPermissions['*']['read'] = false;
@@ -142,11 +141,15 @@ wfLoadSkin( 'Vector' );
 # to LocalSettings.php. Check specific extension documentation for more details.
 # The following extensions were automatically enabled:
 wfLoadExtension( 'WikiEditor' );
+wfLoadExtension( 'NativeSvgHandler' );
 wfLoadExtension( 'TemplateData' );
 wfLoadExtension( 'CodeEditor' );
 wfLoadExtension( 'ConfirmEdit' );
 wfLoadExtension( 'PdfHandler' );
 wfLoadExtension( 'Scribunto' );
+wfLoadExtension( 'TemplateStyles' );
+$wgShowExceptionDetails = true;
+$wgScribuntoDefaultEngine = 'luastandalone';
 wfLoadExtension( 'PluggableAuth' );
 $wgPluggableAuth_EnableAutoLogin = false;
 $wgPluggableAuth_EnableLocalLogin = false;
@@ -165,10 +168,6 @@ $wgSimpleSAMLphp_RealNameAttribute = [
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'
 ];
 $wgInvalidUsernameCharacters = '';
-
-#$wgWhitelistRead = array( 'Special:CreateAccount' );
-
-
 
 # End of automatically generated settings.
 # Add more configuration options below.
@@ -194,8 +193,5 @@ $wgGroupPermissions['sysop']['translate-manage'] = true;
 $wgTranslateDocumentationLanguageCode = 'qqq';
 $wgEnablePageTranslation = true;
 
-
-
 wfLoadExtension( 'UniversalLanguageSelector' );
-$wgULSPosition = 'interlanguage';
 $wgULSEnable = true;
