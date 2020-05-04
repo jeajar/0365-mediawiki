@@ -124,6 +124,8 @@ $wgGroupPermissions['*']['autocreateaccount'] = true;
 $wgGroupPermissions['*']['edit'] = false;
 $wgGroupPermissions['user']['edit'] = true;
 $wgGroupPermissions['*']['read'] = false;
+$wgPageLanguageUseDB = true;
+$wgGroupPermissions['sysop']['pagelang'] = true;
 
 ## Default skin: you can change the default skin. Use the internal symbolic
 ## names, ie 'vector', 'monobook':
@@ -145,9 +147,10 @@ wfLoadExtension( 'NativeSvgHandler' );
 wfLoadExtension( 'TemplateData' );
 wfLoadExtension( 'CodeEditor' );
 wfLoadExtension( 'ConfirmEdit' );
+wfLoadExtension( 'SyntaxHighlight_GeSHi' );
 wfLoadExtension( 'PdfHandler' );
 wfLoadExtension( 'Scribunto' );
-wfLoadExtension( 'TemplateStyles' );
+#wfLoadExtension( 'TemplateStyles' );
 $wgShowExceptionDetails = true;
 $wgScribuntoDefaultEngine = 'luastandalone';
 wfLoadExtension( 'PluggableAuth' );

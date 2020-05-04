@@ -34,9 +34,9 @@ RUN php -r "copy('https://translatewiki.net/mleb/MediaWikiLanguageExtensionBundl
 tar --wildcards -C /var/www/html/wiki/extensions -xjf MediaWikiLanguageExtensionBundle-2020.04.tar.bz2 --strip 1 extensions/* && \
 rm -rf MediaWikiLanguageExtensionBundle-2020.04.tar.bz2
 
-RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/TemplateStyles-REL1_34-c4d6f25.tar.gz', 'TemplateStyles-REL1_34-c4d6f25.tar.gz');" && \ 
-tar -xzf TemplateStyles-REL1_34-c4d6f25.tar.gz -C /var/www/html/wiki/extensions && \
-rm -rf TemplateStyles-REL1_34-c4d6f25.tar.gz
+# RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/TemplateStyles-REL1_34-c4d6f25.tar.gz', 'TemplateStyles-REL1_34-c4d6f25.tar.gz');" && \ 
+# tar -xzf TemplateStyles-REL1_34-c4d6f25.tar.gz -C /var/www/html/wiki/extensions && \
+# rm -rf TemplateStyles-REL1_34-c4d6f25.tar.gz
 
 RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/NativeSvgHandler-master-88a1674.tar.gz', 'NativeSvgHandler-master-88a1674.tar.gz');" && \ 
 tar -xzf NativeSvgHandler-master-88a1674.tar.gz -C /var/www/html/wiki/extensions && \
