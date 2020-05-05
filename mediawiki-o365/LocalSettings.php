@@ -143,13 +143,13 @@ wfLoadSkin( 'Vector' );
 # to LocalSettings.php. Check specific extension documentation for more details.
 # The following extensions were automatically enabled:
 wfLoadExtension( 'WikiEditor' );
-wfLoadExtension( 'NativeSvgHandler' );
-wfLoadExtension( 'TemplateData' );
+#wfLoadExtension( 'NativeSvgHandler' );
+#wfLoadExtension( 'TemplateData' );
 wfLoadExtension( 'CodeEditor' );
 wfLoadExtension( 'ConfirmEdit' );
 wfLoadExtension( 'SyntaxHighlight_GeSHi' );
 wfLoadExtension( 'PdfHandler' );
-wfLoadExtension( 'Scribunto' );
+#wfLoadExtension( 'Scribunto' );
 #wfLoadExtension( 'TemplateStyles' );
 $wgShowExceptionDetails = true;
 $wgScribuntoDefaultEngine = 'luastandalone';
@@ -198,3 +198,4 @@ $wgEnablePageTranslation = true;
 
 wfLoadExtension( 'UniversalLanguageSelector' );
 $wgULSEnable = true;
+$wgExternalLinkTarget = '_blank';

@@ -26,22 +26,19 @@ RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/SimpleSAMLphp-REL1
     tar -xzf SimpleSAMLphp-REL1_34-e6154d8.tar.gz -C /var/www/html/wiki/extensions && \
     rm -rf /var/www/html/SimpleSAMLphp-REL1_34-e6154d8.tar.gz
 
-RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/TemplateData-REL1_34-b9ccaf6.tar.gz', 'TemplateData-REL1_34-b9ccaf6.tar.gz');" && \
-tar -xzf TemplateData-REL1_34-b9ccaf6.tar.gz -C /var/www/html/wiki/extensions && \
-rm -rf TemplateData-REL1_34-b9ccaf6.tar.gz
+# RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/TemplateData-REL1_34-b9ccaf6.tar.gz', 'TemplateData-REL1_34-b9ccaf6.tar.gz');" && \
+# tar -xzf TemplateData-REL1_34-b9ccaf6.tar.gz -C /var/www/html/wiki/extensions && \
+# rm -rf TemplateData-REL1_34-b9ccaf6.tar.gz
 
 RUN php -r "copy('https://translatewiki.net/mleb/MediaWikiLanguageExtensionBundle-2020.04.tar.bz2', 'MediaWikiLanguageExtensionBundle-2020.04.tar.bz2');" && \
 tar --wildcards -C /var/www/html/wiki/extensions -xjf MediaWikiLanguageExtensionBundle-2020.04.tar.bz2 --strip 1 extensions/* && \
 rm -rf MediaWikiLanguageExtensionBundle-2020.04.tar.bz2
 
-# RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/TemplateStyles-REL1_34-c4d6f25.tar.gz', 'TemplateStyles-REL1_34-c4d6f25.tar.gz');" && \ 
-# tar -xzf TemplateStyles-REL1_34-c4d6f25.tar.gz -C /var/www/html/wiki/extensions && \
-# rm -rf TemplateStyles-REL1_34-c4d6f25.tar.gz
+# RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/NativeSvgHandler-master-88a1674.tar.gz', 'NativeSvgHandler-master-88a1674.tar.gz');" && \ 
+# tar -xzf NativeSvgHandler-master-88a1674.tar.gz -C /var/www/html/wiki/extensions && \
+# rm -rf NativeSvgHandler-master-88a1674.tar.gz
 
-RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/NativeSvgHandler-master-88a1674.tar.gz', 'NativeSvgHandler-master-88a1674.tar.gz');" && \ 
-tar -xzf NativeSvgHandler-master-88a1674.tar.gz -C /var/www/html/wiki/extensions && \
-rm -rf NativeSvgHandler-master-88a1674.tar.gz
-
+# Uncomment when the initial wiki setup is complete to use LocalSettings.php file
 COPY LocalSettings.php /var/www/html/wiki/
 
 RUN ln -s /var/simplesamlphp/www /var/www/html/simplesamlphp
