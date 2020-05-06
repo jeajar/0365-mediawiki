@@ -143,8 +143,6 @@ wfLoadSkin( 'Vector' );
 # to LocalSettings.php. Check specific extension documentation for more details.
 # The following extensions were automatically enabled:
 wfLoadExtension( 'WikiEditor' );
-#wfLoadExtension( 'NativeSvgHandler' );
-#wfLoadExtension( 'TemplateData' );
 wfLoadExtension( 'CodeEditor' );
 wfLoadExtension( 'ConfirmEdit' );
 wfLoadExtension( 'SyntaxHighlight_GeSHi' );
@@ -152,10 +150,7 @@ wfLoadExtension( 'PdfHandler' );
 wfLoadExtension( 'Cite' );
 wfLoadExtension( 'Math' );
 wfLoadExtension( 'MultimediaViewer' );
-#wfLoadExtension( 'Scribunto' );
-#wfLoadExtension( 'TemplateStyles' );
 $wgShowExceptionDetails = true;
-#$wgScribuntoDefaultEngine = 'luastandalone';
 wfLoadExtension( 'PluggableAuth' );
 $wgPluggableAuth_EnableAutoLogin = false;
 $wgPluggableAuth_EnableLocalLogin = false;
@@ -166,7 +161,6 @@ $wgPluggableAuth_Class = 'SimpleSAMLphp';
 wfLoadExtension( 'SimpleSAMLphp' );
 $wgSimpleSAMLphp_InstallDir = "/var/simplesamlphp/";
 $wgSimpleSAMLphp_AuthSourceId = 'default-sp';
-
 $wgSimpleSAMLphp_UsernameAttribute = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
 $wgSimpleSAMLphp_EmailAttribute = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
 $wgSimpleSAMLphp_RealNameAttribute = [
@@ -174,9 +168,6 @@ $wgSimpleSAMLphp_RealNameAttribute = [
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'
 ];
 $wgInvalidUsernameCharacters = '';
-
-# End of automatically generated settings.
-# Add more configuration options below.
 
 # MediaWiki Language Extension Bundle
 wfLoadExtension( 'Babel' );
@@ -202,3 +193,5 @@ $wgEnablePageTranslation = true;
 wfLoadExtension( 'UniversalLanguageSelector' );
 $wgULSEnable = true;
 $wgExternalLinkTarget = '_blank';
+$wgAllowDisplayTitle = true;
+$wgRestrictDisplayTitle = false;

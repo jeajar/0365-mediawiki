@@ -30,17 +30,11 @@ RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/Math-REL1_34-b1a02
     tar -xzf Math-REL1_34-b1a022f.tar.gz -C /var/www/html/wiki/extensions && \
     rm -rf Math-REL1_34-b1a022f.tar.gz
 
-# RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/TemplateData-REL1_34-b9ccaf6.tar.gz', 'TemplateData-REL1_34-b9ccaf6.tar.gz');" && \
-# tar -xzf TemplateData-REL1_34-b9ccaf6.tar.gz -C /var/www/html/wiki/extensions && \
-# rm -rf TemplateData-REL1_34-b9ccaf6.tar.gz
 
 RUN php -r "copy('https://translatewiki.net/mleb/MediaWikiLanguageExtensionBundle-2020.04.tar.bz2', 'MediaWikiLanguageExtensionBundle-2020.04.tar.bz2');" && \
 tar --wildcards -C /var/www/html/wiki/extensions -xjf MediaWikiLanguageExtensionBundle-2020.04.tar.bz2 --strip 1 extensions/* && \
 rm -rf MediaWikiLanguageExtensionBundle-2020.04.tar.bz2
 
-# RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/NativeSvgHandler-master-88a1674.tar.gz', 'NativeSvgHandler-master-88a1674.tar.gz');" && \ 
-# tar -xzf NativeSvgHandler-master-88a1674.tar.gz -C /var/www/html/wiki/extensions && \
-# rm -rf NativeSvgHandler-master-88a1674.tar.gz
 
 # Uncomment when the initial wiki setup is complete to use LocalSettings.php file
 COPY LocalSettings.php /var/www/html/wiki/
