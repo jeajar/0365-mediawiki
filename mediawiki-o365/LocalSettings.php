@@ -15,23 +15,21 @@ if ( !defined( 'MEDIAWIKI' ) ) {
 	exit;
 }
 
-
 ## Uncomment this to disable output compression
 # $wgDisableOutputCompression = true;
 
-$wgSitename = "JMAX wiki";
-$wgMetaNamespace = "JMAX_wiki";
+$wgSitename = getenv('WIKI_NAME');
+$wgMetaNamespace = getenv('WIKI_NAME');
 
 ## The URL base path to the directory containing the wiki;
 ## defaults for all runtime URL paths are based off of this.
 ## For more information on customizing the URLs
 ## (like /w/index.php/Page_title to /wiki/Page_title) please see:
 ## https://www.mediawiki.org/wiki/Manual:Short_URL
-$wgScriptPath = "/wiki";
+$wgScriptPath = getenv('WIKI_PATH');
 
 ## The protocol and server name to use in fully-qualified URLs
-$wgServer = "//wiki.jean-max.com";
-#$wgCanonicalServer = "https://wiki.jean-max.com";
+$wgServer = getenv('BASE_URL');
 $wgCacheEpoch = max( $wgCacheEpoch, gmdate( 'YmdHis', @filemtime( __FILE__ ) ) );
 
 ## The URL path to static resources (images, scripts, etc.)
@@ -46,8 +44,8 @@ $wgLogo = "$wgResourceBasePath/resources/assets/wiki.png";
 $wgEnableEmail = true;
 $wgEnableUserEmail = true; # UPO
 
-$wgEmergencyContact = "jm@jmaxpost.com";
-$wgPasswordSender = "jm@jmaxpost.com";
+$wgEmergencyContact = getenv('WIKI_EMAIL');
+$wgPasswordSender = getenv('WIKI_EMAIL');
 
 $wgEnotifUserTalk = false; # UPO
 $wgEnotifWatchlist = false; # UPO
@@ -56,9 +54,9 @@ $wgEmailAuthentication = true;
 ## Database settings
 $wgDBtype = "mysql";
 $wgDBserver = "mysql";
-$wgDBname = "mediawiki";
-$wgDBuser = "mediawiki";
-$wgDBpassword = "YtvSwoWNi6cMahBk";
+$wgDBname = getenv('MYSQL_DATABASE');
+$wgDBuser = getenv('MYSQL_USER');
+$wgDBpassword = getenv('MYSQL_ROOT_PASSWORD');
 
 # MySQL specific settings
 $wgDBprefix = "";

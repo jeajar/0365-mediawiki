@@ -72,8 +72,8 @@ $config = [
      * The email address will be used as the recipient address for error reports, and
      * also as the technical contact in generated metadata.
      */
-    'technicalcontact_name' => 'Jean-Maxim Desjardins',
-    'technicalcontact_email' => 'jm@jmaxpost.com',
+    'technicalcontact_name' => getenv('WIKI_EMAIL'),
+    'technicalcontact_email' => getenv('WIKI_EMAIL'),
 
     /*
      * (Optional) The method by which email is delivered.  Defaults to mail which utilizes the
@@ -138,7 +138,7 @@ $config = [
      * metadata listing and diagnostics pages.
      * You can also put a hash here; run "bin/pwgen.php" to generate one.
      */
-    'auth.adminpassword' => '5BUnR9guMMspbDB2',
+    'auth.adminpassword' => getenv('MYSQL_ROOT_PASSWORD'),
 
     /*
      * Set this options to true if you want to require administrator password to access the web interface

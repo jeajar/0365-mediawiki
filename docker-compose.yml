@@ -52,8 +52,16 @@ services:
       - "80"
     environment:
       - WIKI_PATH=${WIKI_PATH}
+      - WIKI_NAME=${WIKI_NAME}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - SIMPLESAML_PATH=${SIMPLESAML_PATH}
       - BASE_URL=${BASE_URL}
+      - WIKI_EMAIL=${WIKI_EMAIL}
+      - MS_ENTITYID=${MS_ENTITYID}
+      - MS_IDP=${MS_IDP}
       - PUID=${PUID}
       - PGID=${PGID}
     volumes:
@@ -70,7 +78,7 @@ services:
       - "traefik.frontend.headers.contentTypeNosniff=true"
       - "traefik.frontend.headers.contentSecurityPolicy=upgrade-insecure-requests"
       - "traefik.frontend.headers.forceSTSHeader=true"
-      - "traefik.frontend.headers.SSLHost=jean-max.com"
+      - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
       - "traefik.frontend.headers.STSIncluSubdomains=true"
       - "traefik.frontend.headers.STSPreload=true"
       - "traefik.frontend.headers.frameDeny=true"

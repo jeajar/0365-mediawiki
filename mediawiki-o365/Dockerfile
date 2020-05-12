@@ -4,10 +4,10 @@ FROM mediawiki:1.34
 RUN apt-get -y update && \
 apt-get install -y ghostscript xpdf-utils
 
-RUN php -r "copy('https://github.com/simplesamlphp/simplesamlphp/releases/download/v1.18.6/simplesamlphp-1.18.6.tar.gz', 'simplesamlphp-1.18.6.tar.gz');" && \
-tar -xvf simplesamlphp-1.18.6.tar.gz -C /var/
+RUN php -r "copy('https://github.com/simplesamlphp/simplesamlphp/releases/download/v1.18.7/simplesamlphp-1.18.7.tar.gz', 'simplesamlphp-1.18.7.tar.gz');" && \
+tar -xvf simplesamlphp-1.18.7.tar.gz -C /var/
 
-RUN mv /var/simplesamlphp-1.18.6 /var/simplesamlphp
+RUN mv /var/simplesamlphp-1.18.7 /var/simplesamlphp
 
 COPY simplesamlphp/config/config.php /var/simplesamlphp/config/
 COPY simplesamlphp/config/authsources.php /var/simplesamlphp/config/
@@ -18,6 +18,7 @@ RUN mkdir /tmp/backup && \
     mkdir /var/www/html/wiki && \
     mv /tmp/backup/* /var/www/html/wiki/
 
+# Required Extensions
 RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/PluggableAuth-REL1_34-17fb1ea.tar.gz', 'PluggableAuth-REL1_34-17fb1ea.tar.gz');" && \
     tar -xzf PluggableAuth-REL1_34-17fb1ea.tar.gz -C /var/www/html/wiki/extensions && \
     rm -rf PluggableAuth-REL1_34-17fb1ea.tar.gz
@@ -26,10 +27,10 @@ RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/SimpleSAMLphp-REL1
     tar -xzf SimpleSAMLphp-REL1_34-e6154d8.tar.gz -C /var/www/html/wiki/extensions && \
     rm -rf /var/www/html/SimpleSAMLphp-REL1_34-e6154d8.tar.gz
 
+# Nice to have extensions
 RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/Math-REL1_34-b1a022f.tar.gz', 'Math-REL1_34-b1a022f.tar.gz');" && \
     tar -xzf Math-REL1_34-b1a022f.tar.gz -C /var/www/html/wiki/extensions && \
     rm -rf Math-REL1_34-b1a022f.tar.gz
-
 
 RUN php -r "copy('https://translatewiki.net/mleb/MediaWikiLanguageExtensionBundle-2020.04.tar.bz2', 'MediaWikiLanguageExtensionBundle-2020.04.tar.bz2');" && \
 tar --wildcards -C /var/www/html/wiki/extensions -xjf MediaWikiLanguageExtensionBundle-2020.04.tar.bz2 --strip 1 extensions/* && \
@@ -45,6 +46,8 @@ RUN mkdir /var/simplesamlphp/data/db && \
     chown www-data:www-data /var/simplesamlphp/data/db && \
     chown www-data:www-data /var/www/html/wiki/images
 
+# Uncomment to copy custom logo
 COPY assets/difuze_logo-only.png /var/www/html/wiki/resources/assets/wiki.png
+
 COPY html/index.php /var/www/html/index.php
 COPY etc/apache2/conf-available/docker-php.conf /etc/apache2/conf-available/docker-php.conf

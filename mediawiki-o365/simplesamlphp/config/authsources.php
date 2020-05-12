@@ -18,11 +18,13 @@ $config = [
 
         // The entity ID of this SP.
         // Can be NULL/unset, in which case an entity ID is generated based on the metadata URL.
-        'entityID' => 'spn:123c0d87-cc83-4d55-828e-05435090f2e1',
+        //'entityID' => 'spn:123c0d87-cc83-4d55-828e-05435090f2e1',
+        'entityID' => getenv('MS_ENTITYID'),
 
         // The entity ID of the IdP this SP should contact.
         // Can be NULL/unset, in which case the user will be shown a list of available IdPs.
-        'idp' => 'https://sts.windows.net/b9276a22-2145-4cc7-bbc6-609c776533c6/',
+        //'idp' => 'https://sts.windows.net/b9276a22-2145-4cc7-bbc6-609c776533c6/',
+        'idp' => getenv('MS_IDP'),
 
         // The URL to the discovery service.
         // Can be NULL/unset, in which case a builtin discovery service will be used.
