@@ -1,8 +1,8 @@
 # Mediawiki with Office 365 SSO #
 ## Overview ##
-This docker image builds on top of the official [Mediawki docker image](https://hub.docker.com/_/mediawiki) version `1.34` and builds a list of useful and required mediawiki extentions for Office 365 SSO to work with the latest [SimpleSAMLphp](https://simplesamlphp.org/download) version `.1.18.7` installation.
+This docker image builds on top of the official [Mediawki docker image](https://hub.docker.com/_/mediawiki) version `1.34` and builds a list of useful and required mediawiki extentions for Office 365 SSO to work with the latest [SimpleSAMLphp](https://simplesamlphp.org/download) version `1.18.7` installation.
 
-The docker compose stack uses Traefik v1.7 codename `morailles` as a reverse proxy and is configured to issue certificates autamatically with Let's Encrypt. If OV or EV certificates are a requirement, please refer to the [traefik documentation](https://docs.traefik.io/v1.7/configuration/backends/docker/)
+The docker compose stack uses Traefik `v1.7` , codename `morailles` as a reverse proxy and is configured to issue certificates autamatically with Let's Encrypt. If OV or EV certificates are a requirement, please refer to the [traefik documentation](https://docs.traefik.io/v1.7/configuration/backends/docker/).
 
 __Required mediawiki extensions__
 * [PluggableAuth](https://www.mediawiki.org/wiki/Extension:PluggableAuth)
