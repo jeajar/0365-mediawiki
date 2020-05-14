@@ -28,5 +28,8 @@ file_env MYSQL_DATABASE
 file_env MYSQL_PASSWORD
 file_env MYSQL_USER
 file_env MYSQL_ROOT_PASSWORD
+file_env WIKI_EMAIL
+file_env MS_ENTITYID
+file_env MS_IDP
 
 exec "$@"
