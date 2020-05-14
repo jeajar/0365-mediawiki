@@ -132,7 +132,6 @@ Then, the following environment variables can be set. Ideally in `/etc/environme
 ```
 DOMAINNAME=example.com
 TZ=America/Toronto
-DOCKERDIR="Path to local docker folder, I recommend ~/docker"
 BASE_URL=https://example.com
 WIKE_NAME=Name of the Wiki
 WIKI_PATH=/wiki
