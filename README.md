@@ -1,8 +1,10 @@
 # Mediawiki with Office 365 SSO #
 ## Overview ##
-This docker image builds on top of the official [Mediawki docker image](https://hub.docker.com/_/mediawiki) version `1.34` and builds a list of useful and required mediawiki extentions for Office 365 SSO to work with the latest [SimpleSAMLphp](https://simplesamlphp.org/download) version `1.18.7` installation.
+This docker image builds on top of the official [Mediawki image](https://hub.docker.com/_/mediawiki) version `1.34` and builds a list of useful and required mediawiki extentions for Office 365 SSO to work with the latest [SimpleSAMLphp](https://simplesamlphp.org/download) version `1.18.7` installation.
 
-The docker compose stack uses Traefik `v1.7` , codename `morailles` as a reverse proxy and is configured to issue certificates autamatically with Let's Encrypt. If OV or EV certificates are a requirement, please refer to the [traefik documentation](https://docs.traefik.io/v1.7/configuration/backends/docker/).
+The docker compose stack uses Traefik `v1.7` , codename `morailles` as a reverse proxy and is configured to issue certificates autamatically with Let's Encrypt. If OV or EV certificates are a requirement, please refer to the [traefik documentation](https://docs.traefik.io/v1.7/configuration/backends/docker/). TLS 1.2 with a handlful of cyphers are allowed, older devices using TLS 1.1 will not work.
+
+This image uses a modified entrypoint to handle docker secrets environement variables like the official mysql image do with variables like MYSQL_ROOT_PASSWORD_FILE.
 
 __Required mediawiki extensions__
 * [PluggableAuth](https://www.mediawiki.org/wiki/Extension:PluggableAuth)
@@ -15,13 +17,14 @@ __Nice to have included in this image__
 ### Requirements ###
 You need a system with `docker-ce` and `docker-compose` installed.
 
-## First steps ##
+## First steps and testing ##
 First, clone this repository:
 ```
 git clone git@gitlab.com:jmaxdfz/o365-mediawiki.git
 ```
+__See the section bellow on production deployment.__
 
-The `docker-compose.yml` file will use a `.env` file that you need to create at the same level to set the following environment variables:
+The `docker-compose.yml` file uses a `.env` file that you need to create at the same level to set the following environment variables. Passwords in environment variable __should not__ be used in production.
 
 ```
 PUID=1000
@@ -88,9 +91,50 @@ Paste the XML content or upload the file then clic `Parse`.
 
 Copy the resulting php code into mediawiki-o365/simplesamlphp/saml20-idp-remote.php
 
-## Note on passwords and Docker Swarm ##
-A more secure way to run this container would be to use Docker Swarm with hashed secrets instead of environment variables.
+## Note on passwords and Docker Compose ##
+The proper way to deploy docker in production is to user docker swarm with external docker secrets to avoid passwords and sensible information in plain text or in environment variables.
 
 ## Security ##
-It is advisable to run the SSH server on a different port with a higher number, ex: 32324 and only allow key pair authentification.
-Set an admin user and disable root login.
+Every usual steps should be done in order to secure the host and the host OS:
+* Disable root user
+* Disable ssh password login
+* Use a high port like 32XXX instead of port 22 for SSH
+* Turn on firewall and block all but ssh, http and https traffic
+* Log all failed login on the server (HTTP or SSH)
+* Perform CVE scans on host and on docker runtime
+
+## Deployment with docker swarm ##
+the file `stack.yml` should be used with the command `docker stack deploy` and __NOT__ with `docker-compose`
+
+A few steps are required before. First we need to initialize docker swarm and advertise on the loop back device only.
+```
+docker swarm init --advertise-addr lo:2377
+```
+To deploy this stack, we need to create docker secrets for the following sensible elements:
+* mysql_root_password
+* mysql_database
+* mysql_user
+* do_auth_token
+* ms_entityid
+* ms_idp
+* wiki_email
+
+Using the command:
+```
+ echo "my_secret_password_or_key" | docker secret create my_secret_name -
+```
+
+Using a space before `echo` to avoid writing to the bash history and having our sensible information in plain text on the host.
+
+For docker swarm, the `traefik` folder can stay in it's current location. Make sure to add the line `swarmmode = true` in the `[docker]` section. Also remmember line `37` for Let's Encrypt staging CA.
+
+Then, the following environment variables can be set. Ideally in `/etc/environment` since `docker deploy` does not support `.env` files.
+```
+DOMAINNAME=example.com
+TZ=America/Toronto
+DOCKERDIR="Path to local docker folder, I recommend ~/docker"
+BASE_URL=https://example.com
+WIKE_NAME=Name of the Wiki
+WIKI_PATH=/wiki
+SIMPLESAML_PATH=/simplesaml
+```
