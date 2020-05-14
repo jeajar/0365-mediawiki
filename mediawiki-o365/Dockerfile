@@ -51,3 +51,5 @@ COPY assets/difuze_logo-only.png /var/www/html/wiki/resources/assets/wiki.png
 
 COPY html/index.php /var/www/html/index.php
 COPY etc/apache2/conf-available/docker-php.conf /etc/apache2/conf-available/docker-php.conf
+
+COPY docker-php-entrypoint /usr/local/bin/docker-php-entrypoint
