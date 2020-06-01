@@ -1,12 +1,17 @@
 # Replace DOMAINNAME and EMAIL by your info
 
 logLevel = "ERROR" #DEBUG, INFO, WARN, ERROR, FATAL, PANIC
-InsecureSkipVerify = true
+#InsecureSkipVerify = true
 defaultEntryPoints = ["https", "http"]
 
 [api]
   entryPoint = "traefik"
   dashboard = false
+
+[traefikLog]
+filePath = "/etc/traefik/log/traefik.log"
+[accessLog]
+filePath = "/etc/traefik/log/access.log"
 
 # Force HTTPS
 [entryPoints]
