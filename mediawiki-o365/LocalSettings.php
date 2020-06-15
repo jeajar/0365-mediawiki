@@ -117,19 +117,24 @@ $wgRightsIcon = "";
 $wgDiff3 = "/usr/bin/diff3";
 
 # The following permissions were set based on your choice in the installer
+
 define('NS_RESTRICTED', 100);
 define('NS_RESTRICTED_TALK', 101);
 $wgExtraNamespaces[NS_RESTRICTED] = 'Restricted';
 $wgExtraNamespaces[NS_RESTRICTED_TALK] = 'Restricted_talk';
-$wgNamespacePermissionLockdown[NS_RESTRICTED]['read'] = [ 'sysop' ];
-$wgNamespacePermissionLockdown[NS_RESTRICTED_TALK]['read'] = [ 'sysop' ];
+$wgNamespacePermissionLockdown[NS_RESTRICTED]['read'] = [ 'priviledged' ];
+$wgNamespacePermissionLockdown[NS_RESTRICTED_TALK]['read'] = [ 'priviledged' ];
 $wgNonincludableNamespaces[] = NS_RESTRICTED;
 $wgNonincludableNamespaces[] = NS_RESTRICTED_TALK;
 
 $wgGroupPermissions['*']['createaccount'] = true;
 $wgGroupPermissions['*']['autocreateaccount'] = true;
+$wgGroupPermissions['user']['edit'] = false;
+$wgGroupPermissions['editor']['edit'] = true;
+$wgGroupPermissions['editor']['createpage'] = true;
 $wgGroupPermissions['*']['edit'] = false;
-$wgGroupPermissions['user']['edit'] = true;
+$wgGroupPermissions['*']['createpage'] = false;
+$wgGroupPermissions['user']['createpage'] = false;
 $wgGroupPermissions['*']['read'] = false;
 $wgPageLanguageUseDB = true;
 $wgGroupPermissions['sysop']['pagelang'] = true;
@@ -169,7 +174,7 @@ $wgPluggableAuth_Class = 'SimpleSAMLphp';
 wfLoadExtension( 'SimpleSAMLphp' );
 $wgSimpleSAMLphp_InstallDir = "/var/simplesamlphp/";
 $wgSimpleSAMLphp_AuthSourceId = 'default-sp';
-$wgSimpleSAMLphp_UsernameAttribute = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
+$wgSimpleSAMLphp_UsernameAttribute = 'http://schemas.microsoft.com/identity/claims/displayname';
 $wgSimpleSAMLphp_EmailAttribute = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name';
 $wgSimpleSAMLphp_RealNameAttribute = [
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname',
