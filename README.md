@@ -13,6 +13,7 @@ __Required mediawiki extensions__
 __Nice to have included in this image__
 * [Math](https://www.mediawiki.org/wiki/Extension:Math)
 * [MediaWikiLanguageExtensionBundle](https://www.mediawiki.org/wiki/MediaWiki_Language_Extension_Bundle)
+* [Lockdown](https://www.mediawiki.org/wiki/Extension:Lockdown)
 
 ### Requirements ###
 You need a system with `docker-ce` and `docker-compose` installed.
@@ -27,8 +28,6 @@ __See the section bellow on production deployment.__
 The `docker-compose.yml` file uses a `.env` file that you need to create at the same level to set the following environment variables. Passwords in environment variable __should not__ be used in production.
 
 ```
-PUID=1000
-PGID=1000
 DOMAINNAME=example.com
 TZ=America/Toronto
 DOCKERDIR="Path to local docker folder, I recommend ~/docker"
@@ -39,7 +38,7 @@ BASE_URL=https://example.com
 WIKE_NAME=Name of the Wiki
 WIKI_PATH=/wiki
 SIMPLESAML_PATH=/simplesaml
-DO_AUTH_TOKEN=Digital Ocean API token. Needed for Traefik to issue certificates with Let's Encrypt
+DO_AUTH_TOKEN=Digital Ocean API token. Needed for Traefik to issue certificates with Let's Encrypt. Should also be stored in a docker secret.
 WIKI_EMAIL=wiki@example.com
 MS_ENTITYID=spn:123c0d87-cc83-4d55-828e-05435090f2e1
 MS_IDP=https://sts.windows.net/b9276a22-2145-4cc7-bbc6-609c776533c6/

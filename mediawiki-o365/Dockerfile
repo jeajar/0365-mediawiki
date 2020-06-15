@@ -27,6 +27,10 @@ RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/SimpleSAMLphp-REL1
     tar -xzf SimpleSAMLphp-REL1_34-e6154d8.tar.gz -C /var/www/html/wiki/extensions && \
     rm -rf /var/www/html/SimpleSAMLphp-REL1_34-e6154d8.tar.gz
 
+RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/Lockdown-REL1_34-95cdc71.tar.gz', 'Lockdown-REL1_34-95cdc71.tar.gz');" && \
+    tar -xvf Lockdown-REL1_34-95cdc71.tar.gz -C /var/www/html/wiki/extensions && \
+    rm -rf Lockdown-REL1_34-95cdc71.tar.gz
+
 # Nice to have extensions
 RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/Math-REL1_34-b1a022f.tar.gz', 'Math-REL1_34-b1a022f.tar.gz');" && \
     tar -xzf Math-REL1_34-b1a022f.tar.gz -C /var/www/html/wiki/extensions && \

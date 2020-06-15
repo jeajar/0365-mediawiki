@@ -117,6 +117,15 @@ $wgRightsIcon = "";
 $wgDiff3 = "/usr/bin/diff3";
 
 # The following permissions were set based on your choice in the installer
+define('NS_RESTRICTED', 100);
+define('NS_RESTRICTED_TALK', 101);
+$wgExtraNamespaces[NS_RESTRICTED] = 'Restricted';
+$wgExtraNamespaces[NS_RESTRICTED_TALK] = 'Restricted_talk';
+$wgNamespacePermissionLockdown[NS_RESTRICTED]['read'] = [ 'sysop' ];
+$wgNamespacePermissionLockdown[NS_RESTRICTED_TALK]['read'] = [ 'sysop' ];
+$wgNonincludableNamespaces[] = NS_RESTRICTED;
+$wgNonincludableNamespaces[] = NS_RESTRICTED_TALK;
+
 $wgGroupPermissions['*']['createaccount'] = true;
 $wgGroupPermissions['*']['autocreateaccount'] = true;
 $wgGroupPermissions['*']['edit'] = false;
@@ -147,6 +156,7 @@ wfLoadExtension( 'SyntaxHighlight_GeSHi' );
 wfLoadExtension( 'PdfHandler' );
 wfLoadExtension( 'Cite' );
 wfLoadExtension( 'Math' );
+wfLoadExtension( 'Lockdown' );
 wfLoadExtension( 'MultimediaViewer' );
 $wgShowExceptionDetails = true;
 wfLoadExtension( 'PluggableAuth' );
@@ -166,6 +176,7 @@ $wgSimpleSAMLphp_RealNameAttribute = [
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname'
 ];
 $wgInvalidUsernameCharacters = '';
+$wgUserrightsInterwikiDelimiter = '@';
 
 # MediaWiki Language Extension Bundle
 wfLoadExtension( 'Babel' );
