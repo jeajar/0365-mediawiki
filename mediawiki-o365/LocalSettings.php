@@ -38,6 +38,7 @@ $wgResourceBasePath = $wgScriptPath;
 ## The URL path to the logo.  Make sure you change this from the default,
 ## or else you'll overwrite your logo when you upgrade!
 $wgLogo = "$wgResourceBasePath/resources/assets/wiki.png";
+$wgFavicon = "$wgResourceBasePath/resources/assets/favicon.ico";
 
 ## UPO means: this is also a user preference option
 
@@ -122,8 +123,8 @@ define('NS_RESTRICTED', 100);
 define('NS_RESTRICTED_TALK', 101);
 $wgExtraNamespaces[NS_RESTRICTED] = 'Restricted';
 $wgExtraNamespaces[NS_RESTRICTED_TALK] = 'Restricted_talk';
-$wgNamespacePermissionLockdown[NS_RESTRICTED]['read'] = [ 'priviledged' ];
-$wgNamespacePermissionLockdown[NS_RESTRICTED_TALK]['read'] = [ 'priviledged' ];
+$wgNamespacePermissionLockdown[NS_RESTRICTED]['read'] = [ 'privileged' ];
+$wgNamespacePermissionLockdown[NS_RESTRICTED_TALK]['read'] = [ 'privileged' ];
 $wgNonincludableNamespaces[] = NS_RESTRICTED;
 $wgNonincludableNamespaces[] = NS_RESTRICTED_TALK;
 
@@ -132,6 +133,8 @@ $wgGroupPermissions['*']['autocreateaccount'] = true;
 $wgGroupPermissions['user']['edit'] = false;
 $wgGroupPermissions['editor']['edit'] = true;
 $wgGroupPermissions['editor']['createpage'] = true;
+$wgGroupPermissions['privileged']['edit'] = true;
+$wgGroupPermissions['privileged']['createpage'] = true;
 $wgGroupPermissions['*']['edit'] = false;
 $wgGroupPermissions['*']['createpage'] = false;
 $wgGroupPermissions['user']['createpage'] = false;

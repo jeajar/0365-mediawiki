@@ -1,13 +1,13 @@
 
-FROM mediawiki:1.34
+FROM mediawiki:1.35
 
 RUN apt-get -y update && \
 apt-get install -y ghostscript xpdf-utils
 
-RUN php -r "copy('https://github.com/simplesamlphp/simplesamlphp/releases/download/v1.18.7/simplesamlphp-1.18.7.tar.gz', 'simplesamlphp-1.18.7.tar.gz');" && \
-tar -xvf simplesamlphp-1.18.7.tar.gz -C /var/
+RUN php -r "copy('https://github.com/simplesamlphp/simplesamlphp/releases/download/v1.18.8/simplesamlphp-1.18.8.tar.gz', 'simplesamlphp-1.18.8.tar.gz');" && \
+tar -xvf simplesamlphp-1.18.8.tar.gz -C /var/
 
-RUN mv /var/simplesamlphp-1.18.7 /var/simplesamlphp
+RUN mv /var/simplesamlphp-1.18.8 /var/simplesamlphp
 
 COPY simplesamlphp/config/config.php /var/simplesamlphp/config/
 COPY simplesamlphp/config/authsources.php /var/simplesamlphp/config/
@@ -52,6 +52,7 @@ RUN mkdir /var/simplesamlphp/data/db && \
 
 # Uncomment to copy custom logo
 COPY assets/difuze_logo-only.png /var/www/html/wiki/resources/assets/wiki.png
+COPY assets/difuze_black_favicon.ico /var/www/html/wiki/resources/assets/favicon.ico
 
 COPY html/index.php /var/www/html/index.php
 COPY etc/apache2/conf-available/docker-php.conf /etc/apache2/conf-available/docker-php.conf

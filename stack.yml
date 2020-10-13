@@ -3,8 +3,6 @@ version: "3.7"
 services:
   reverse_proxy:
     image: traefik:v1.7
-    environment:
-      - DO_AUTH_TOKEN_FILE=/run/secrets/do_auth_token
     networks:
       - traefik-swarm
     ports:
@@ -12,6 +10,8 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${DOCKERDIR}/traefik/acme:/etc/traefik/acme
+      - ${DOCKERDIR}/traefik/log:/etc/traefik/log
     deploy:
       placement:
         constraints: [node.role==manager]
@@ -19,17 +19,17 @@ services:
       - source: traefik_toml
         target: /etc/traefik/traefik.toml
         mode: 0444
-      - source: traefik_storage
-        target: /etc/traefik/acme/acme.json
-        mode: 0600
-    secrets:
-      - do_auth_token
+        #- source: traefik_storage
+        #target: /etc/traefik/acme/acme.json
+        #mode: 0600
 
-  db:
+  wiki_db:
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
     networks:
       - traefik-swarm
+    ports:
+      - 3306:3306
     environment:
       - TZ=${TZ}
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
@@ -46,10 +46,34 @@ services:
       placement:
         constraints: [node.role==manager]
 
-  wiki:
-    image: media-wiki-o365:dev
+  db_backup:
+    image: mysql-backup:0.10.0
     depends_on:
-      - db
+      - wiki_db
+    networks:
+      - traefik-swarm
+    environment:
+      - TZ=${TZ}
+      - DB_SERVER=wiki_db
+      - DB_USER=root
+      - DB_PASS_FILE=/run/secrets/mysql_root_password
+      - DB_DUMP_TARGET=s3://wiki-difuze-db-backup/mysql_backup
+      - DB_DUMP_BEGIN=0020
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_ACCESS_KEY_ID_FILE=/run/secrets/aws_access_key_id
+      - AWS_SECRET_ACCESS_KEY_FILE=/run/secrets/aws_secret_access_key
+    secrets:
+      - mysql_root_password
+      - mysql_database
+      - mysql_user
+      - aws_access_key_id
+      - aws_secret_access_key
+
+
+  wiki:
+    image: wiki365:1.34.0
+    depends_on:
+      - wiki_db
     networks:
       - traefik-swarm
     ports:
@@ -82,7 +106,7 @@ services:
       labels:
         - "traefik.enable=true"
         - "traefik.backend=wiki"
-        - "traefik.frontend.rule=Host:wiki.${DOMAINNAME}"
+        - "traefik.frontend.rule=Host:${DOMAINNAME}"
         - "traefik.port=80"
         - "traefik.docker.network=traefik-swarm"
         - "traefik.frontend.headers.SSLRedirect=true"
@@ -109,8 +133,8 @@ volumes:
 configs:
   traefik_toml:
     file: ./traefik/traefik.toml
-  traefik_storage:
-    file: ./traefik/acme/acme.json
+    #traefik_storage:
+    #file: ./traefik/acme/acme.json
 
 secrets:
   mysql_root_password:
@@ -126,4 +150,8 @@ secrets:
   ms_idp:
     external: true
   wiki_email:
+    external: true
+  aws_access_key_id:
+    external: true
+  aws_secret_access_key:
     external: true
