@@ -1,5 +1,5 @@
 
-FROM mediawiki:1.35
+FROM mediawiki:1.34
 
 RUN apt-get -y update && \
 apt-get install -y ghostscript xpdf-utils

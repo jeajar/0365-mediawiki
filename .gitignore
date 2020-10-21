@@ -2,3 +2,6 @@
 .env
 *.code-workspace
 *.DS_Store
+*/log
+*.bak*
+*/acme

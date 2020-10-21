@@ -71,7 +71,7 @@ services:
 
 
   wiki:
-    image: wiki365:1.34.0
+    image: wiki365:1.34b
     depends_on:
       - wiki_db
     networks:
