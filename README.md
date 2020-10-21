@@ -4,7 +4,7 @@ This docker image builds on top of the official [Mediawki image](https://hub.doc
 
 The docker compose stack uses Traefik `v1.7` , codename `morailles` as a reverse proxy and is configured to issue certificates autamatically with Let's Encrypt. If OV or EV certificates are a requirement, please refer to the [traefik documentation](https://docs.traefik.io/v1.7/configuration/backends/docker/). TLS 1.2 with a handlful of cyphers are allowed, older devices using TLS 1.1 will not work.
 
-This image uses a modified entrypoint to handle docker secrets environement variables like the official mysql image do with variables like MYSQL_ROOT_PASSWORD_FILE.
+This image uses a modified entrypoint to handle docker secrets environement variables like the official mysql image do with variables like `MYSQL_ROOT_PASSWORD_FILE`.
 
 __Required mediawiki extensions__
 * [PluggableAuth](https://www.mediawiki.org/wiki/Extension:PluggableAuth)
@@ -75,7 +75,7 @@ Modify the `traefik.toml` file with you domain name and email. Notice the line `
 ## Build the docker image ##
 cd into the `mediawiki-o365` folder in the git repo and build the image:
 ```
-docker build --tag mediawiki-o365:1.34 .
+docker build --tag mediawiki-o365:${STACK_VERSION} .
 ```
 Next, cd at the root of the repo and run docker-compose. Make sure the `.env` file has all envirenment variables set
 ```
@@ -108,6 +108,10 @@ the file `stack.yml` should be used with the command `docker stack deploy` and _
 A few steps are required before. First we need to initialize docker swarm and advertise on the loop back device only.
 ```
 docker swarm init --advertise-addr lo:2377
+```
+Then create the overlay network
+```
+docker network create -d overlay traefik-swarm
 ```
 To deploy this stack, we need to create docker secrets for the following sensible elements:
 * mysql_root_password
