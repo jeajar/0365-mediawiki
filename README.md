@@ -1,4 +1,6 @@
 # Mediawiki with Office 365 SSO #
+Development branch, moving to Traefik v2 and automatic metadata refresh for SimpleSAML
+
 ## Overview ##
 This docker image builds on top of the official [Mediawki image](https://hub.docker.com/_/mediawiki) version `1.34` and builds a list of useful and required mediawiki extentions for Office 365 SSO to work with the latest [SimpleSAMLphp](https://simplesamlphp.org/download) version `1.18.7` installation.
 
