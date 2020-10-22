@@ -58,7 +58,7 @@ services:
       - DB_SERVER=wiki_db
       - DB_USER=root
       - DB_PASS_FILE=/run/secrets/mysql_root_password
-      - DB_DUMP_TARGET=s3://wiki-difuze-db-backup/mysql_backup
+      - DB_DUMP_TARGET=${DB_DUMP_TARGET}
       - DB_DUMP_BEGIN=0020
       - AWS_DEFAULT_REGION=us-east-1
       - AWS_ACCESS_KEY_ID_FILE=/run/secrets/aws_access_key_id
@@ -77,8 +77,6 @@ services:
       - wiki_db
     networks:
       - traefik-swarm
-    expose:
-      - 80
     environment:
       - WIKI_PATH=${WIKI_PATH}
       - WIKI_NAME=${WIKI_NAME}
