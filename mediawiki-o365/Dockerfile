@@ -9,9 +9,9 @@ tar -xvf simplesamlphp-1.18.8.tar.gz -C /var/
 
 RUN mv /var/simplesamlphp-1.18.8 /var/simplesamlphp
 
-COPY simplesamlphp/config/config.php /var/simplesamlphp/config/
-COPY simplesamlphp/config/authsources.php /var/simplesamlphp/config/
-COPY simplesamlphp/metadata/saml20-idp-remote.php /var/simplesamlphp/metadata/
+COPY simplesamlphp/config/*.php /var/simplesamlphp/config/
+
+RUN touch /var/simplesamlphp/modules/cron/enable /var/simplesamlphp/modules/metarefresh/enable
 
 RUN mkdir /tmp/backup && \
     mv /var/www/html/* /tmp/backup && \
@@ -41,16 +41,16 @@ tar --wildcards -C /var/www/html/wiki/extensions -xjf MediaWikiLanguageExtension
 rm -rf MediaWikiLanguageExtensionBundle-2020.04.tar.bz2
 
 
-# Uncomment when the initial wiki setup is complete to use LocalSettings.php file
+# Wiki configuratoin
 COPY LocalSettings.php /var/www/html/wiki/
 
 RUN ln -s /var/simplesamlphp/www /var/www/html/simplesamlphp
 
-RUN mkdir /var/simplesamlphp/data/db && \
-    chown www-data:www-data /var/simplesamlphp/data/db && \
+RUN mkdir /var/simplesamlphp/metadata/o365 /var/simplesamlphp/data/db && \
+    chown www-data:www-data /var/simplesamlphp/data/db /var/simplesamlphp/metadata/o365 && \
     chown www-data:www-data /var/www/html/wiki/images
 
-# Uncomment to copy custom logo
+# Custom logo and favicon
 COPY assets/logo.png /var/www/html/wiki/resources/assets/wiki.png
 COPY assets/favicon.ico /var/www/html/wiki/resources/assets/favicon.ico
 

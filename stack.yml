@@ -22,9 +22,6 @@ services:
       - source: traefik_rules
         target: /etc/traefik/rules.yml
         mode: 0444
-      # - source: cert_store
-      #   target: /acme.json
-      #   mode: 0600
 
   wiki_db:
     image: mysql:5.7
@@ -72,7 +69,7 @@ services:
 
 
   wiki:
-    image: wiki365:1.34b
+    image: wiki365:1.34c
     depends_on:
       - wiki_db
     networks:
@@ -87,9 +84,10 @@ services:
       - MYSQL_PASSWORD_FILE=/run/secrets/mysql_root_password
       - SIMPLESAML_PATH=${SIMPLESAML_PATH}
       - BASE_URL=${BASE_URL}
-      - WIKI_EMAIL_FILE=/run/secrets/wiki_email
+      - WIKI_EMAIL=${WIKI_EMAIL}
       - MS_ENTITYID_FILE=/run/secrets/ms_entityid
       - MS_IDP_FILE=/run/secrets/ms_idp
+      - FEDERATION_URL=${FEDERATION_URL}
     secrets:
       - mysql_root_password
       - mysql_database

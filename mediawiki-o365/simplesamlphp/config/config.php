@@ -1079,6 +1079,7 @@ $config = [
      */
     'metadata.sources' => [
         ['type' => 'flatfile'],
+        ['type' => 'flatfile', 'directory' => 'metadata/o365'],
     ],
 
     /*
