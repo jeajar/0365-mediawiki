@@ -2,7 +2,7 @@
 version: "3.7"
 services:
   reverse_proxy:
-    image: traefik:v1.7
+    image: traefik:v2.3
     networks:
       - traefik-swarm
     ports:
@@ -10,26 +10,27 @@ services:
       - 443:443
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${DOCKERDIR}/traefik/acme:/etc/traefik/acme
-      - ${DOCKERDIR}/traefik/log:/etc/traefik/log
+      - ./traefik/acme.json:/acme.json
+      - ./traefik/log:/etc/traefik/log
     deploy:
       placement:
         constraints: [node.role==manager]
     configs:
-      - source: traefik_toml
-        target: /etc/traefik/traefik.toml
+      - source: traefik_config
+        target: /etc/traefik/traefik.yml
         mode: 0444
-        #- source: traefik_storage
-        #target: /etc/traefik/acme/acme.json
-        #mode: 0600
+      - source: traefik_rules
+        target: /etc/traefik/rules.yml
+        mode: 0444
+      # - source: cert_store
+      #   target: /acme.json
+      #   mode: 0600
 
   wiki_db:
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
     networks:
       - traefik-swarm
-    ports:
-      - 3306:3306
     environment:
       - TZ=${TZ}
       - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
@@ -76,8 +77,8 @@ services:
       - wiki_db
     networks:
       - traefik-swarm
-    ports:
-      - "80"
+    expose:
+      - 80
     environment:
       - WIKI_PATH=${WIKI_PATH}
       - WIKI_NAME=${WIKI_NAME}
@@ -91,8 +92,6 @@ services:
       - WIKI_EMAIL_FILE=/run/secrets/wiki_email
       - MS_ENTITYID_FILE=/run/secrets/ms_entityid
       - MS_IDP_FILE=/run/secrets/ms_idp
-      - PUID=${PUID}
-      - PGID=${PGID}
     secrets:
       - mysql_root_password
       - mysql_database
@@ -105,20 +104,15 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.backend=wiki"
-        - "traefik.frontend.rule=Host:${DOMAINNAME}"
-        - "traefik.port=80"
-        - "traefik.docker.network=traefik-swarm"
-        - "traefik.frontend.headers.SSLRedirect=true"
-        - "traefik.frontend.headers.STSSeconds=315360000"
-        - "traefik.frontend.headers.browserXSSFilter=true"
-        - "traefik.frontend.headers.contentTypeNosniff=true"
-        - "traefik.frontend.headers.contentSecurityPolicy=upgrade-insecure-requests"
-        - "traefik.frontend.headers.forceSTSHeader=true"
-        - "traefik.frontend.headers.SSLHost=${DOMAINNAME}"
-        - "traefik.frontend.headers.STSIncluSubdomains=true"
-        - "traefik.frontend.headers.STSPreload=true"
-        - "traefik.frontend.headers.frameDeny=true"
+        - "traefik.http.routers.wiki.entrypoints=http"
+        - "traefik.http.routers.wiki.rule=Host(`wiki.${DOMAINNAME}`)"
+        - "traefik.http.middlewares.https-redirect.redirectscheme.scheme=https"
+        - "traefik.http.routers.wiki.middlewares=https-redirect"
+        - "traefik.http.routers.wiki-secure.entrypoints=https"
+        - "traefik.http.routers.wiki-secure.rule=Host(`wiki.${DOMAINNAME}`)"
+        - "traefik.http.routers.wiki-secure.tls=true"
+        - "traefik.http.routers.wiki-secure.tls.certresolver=http"
+        - "traefik.http.services.wiki.loadbalancer.server.port=80"
       placement:
         constraints: [node.role==manager]
 
@@ -131,10 +125,12 @@ volumes:
   mysql:
 
 configs:
-  traefik_toml:
-    file: ./traefik/traefik.toml
-    #traefik_storage:
-    #file: ./traefik/acme/acme.json
+  traefik_config:
+    file: ./traefik/traefik.yml
+  traefik_rules:
+    file: ./traefik/rules.yml
+  cert_store:
+    file: ./traefik/acme.json
 
 secrets:
   mysql_root_password:
@@ -142,8 +138,6 @@ secrets:
   mysql_database:
     external: true
   mysql_user:
-    external: true
-  do_auth_token:
     external: true
   ms_entityid:
     external: true

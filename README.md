@@ -106,7 +106,10 @@ Every usual steps should be done in order to secure the host and the host OS:
 
 ## Deployment with docker swarm ##
 the file `stack.yml` should be used with the command `docker stack deploy` and __NOT__ with `docker-compose`
-
+Ex command to remove and deploy while using the .env file:
+```
+docker stack rm wiki365 && export $(cat .env) && docker stack deploy -c stack.yml wiki365
+```
 A few steps are required before. First we need to initialize docker swarm and advertise on the loop back device only.
 ```
 docker swarm init --advertise-addr lo:2377

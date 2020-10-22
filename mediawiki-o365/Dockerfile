@@ -51,8 +51,8 @@ RUN mkdir /var/simplesamlphp/data/db && \
     chown www-data:www-data /var/www/html/wiki/images
 
 # Uncomment to copy custom logo
-COPY assets/difuze_logo-only.png /var/www/html/wiki/resources/assets/wiki.png
-COPY assets/difuze_black_favicon.ico /var/www/html/wiki/resources/assets/favicon.ico
+COPY assets/logo.png /var/www/html/wiki/resources/assets/wiki.png
+COPY assets/favicon.ico /var/www/html/wiki/resources/assets/favicon.ico
 
 COPY html/index.php /var/www/html/index.php
 COPY etc/apache2/conf-available/docker-php.conf /etc/apache2/conf-available/docker-php.conf

@@ -1,0 +1,36 @@
+api:
+  dashboard: true
+  debug: true
+log:
+  level: info
+
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":443"
+
+providers:
+  docker:
+    endpoint: unix:///var/run/docker.sock
+    exposedByDefault: false
+    swarmMode: true
+  file:
+    filename: etc/traefik/rules.yml
+
+certificatesResolvers:
+  http:
+    acme:
+      email: jm@jmaxpost.com
+      storage: acme.json
+      #caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      httpChallenge:
+        entryPoint: http
+
+log:
+  filePath: "/etc/traefik/log/traefik.log"
+  level: WARN
+accessLog:
+  filePath: "/etc/traefik/log/access.log"
+  bufferingSize: 100
+
