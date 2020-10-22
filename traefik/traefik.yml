@@ -1,8 +1,6 @@
 api:
   dashboard: true
   debug: true
-log:
-  level: info
 
 entryPoints:
   http:
