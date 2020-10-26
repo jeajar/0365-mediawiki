@@ -57,7 +57,7 @@ services:
       - DB_PASS_FILE=/run/secrets/mysql_root_password
       - DB_DUMP_TARGET=${DB_DUMP_TARGET}
       - DB_DUMP_BEGIN=0020
-      - AWS_DEFAULT_REGION=us-east-1
+      - DB_DUMP_TARGET=s3://wiki-difuze-db-backup/mysql_backup
       - AWS_ACCESS_KEY_ID_FILE=/run/secrets/aws_access_key_id
       - AWS_SECRET_ACCESS_KEY_FILE=/run/secrets/aws_secret_access_key
     secrets:
@@ -69,7 +69,7 @@ services:
 
 
   wiki:
-    image: wiki365:1.34c
+    image: wiki365:1.35a
     depends_on:
       - wiki_db
     networks:

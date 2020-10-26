@@ -1,5 +1,5 @@
 
-FROM mediawiki:1.34
+FROM mediawiki:1.35
 
 RUN apt-get -y update && \
 apt-get install -y ghostscript xpdf-utils
@@ -19,26 +19,26 @@ RUN mkdir /tmp/backup && \
     mv /tmp/backup/* /var/www/html/wiki/
 
 # Required Extensions
-RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/PluggableAuth-REL1_34-17fb1ea.tar.gz', 'PluggableAuth-REL1_34-17fb1ea.tar.gz');" && \
-    tar -xzf PluggableAuth-REL1_34-17fb1ea.tar.gz -C /var/www/html/wiki/extensions && \
-    rm -rf PluggableAuth-REL1_34-17fb1ea.tar.gz
+RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/PluggableAuth-REL1_35-2a465ae.tar.gz', 'PluggableAuth-REL1_35-2a465ae.tar.gz');" && \
+    tar -xzf PluggableAuth-REL1_35-2a465ae.tar.gz -C /var/www/html/wiki/extensions && \
+    rm -rf PluggableAuth-REL1_35-2a465ae.tar.gz
 
-RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/SimpleSAMLphp-REL1_34-e6154d8.tar.gz', 'SimpleSAMLphp-REL1_34-e6154d8.tar.gz');" && \
-    tar -xzf SimpleSAMLphp-REL1_34-e6154d8.tar.gz -C /var/www/html/wiki/extensions && \
-    rm -rf /var/www/html/SimpleSAMLphp-REL1_34-e6154d8.tar.gz
+RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/SimpleSAMLphp-REL1_35-3be624f.tar.gz', 'SimpleSAMLphp-REL1_35-3be624f.tar.gz');" && \
+    tar -xzf SimpleSAMLphp-REL1_35-3be624f.tar.gz -C /var/www/html/wiki/extensions && \
+    rm -rf /var/www/html/SimpleSAMLphp-REL1_35-3be624f.tar.gz
 
-RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/Lockdown-REL1_34-95cdc71.tar.gz', 'Lockdown-REL1_34-95cdc71.tar.gz');" && \
-    tar -xvf Lockdown-REL1_34-95cdc71.tar.gz -C /var/www/html/wiki/extensions && \
-    rm -rf Lockdown-REL1_34-95cdc71.tar.gz
+RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/Lockdown-REL1_35-b307d20.tar.gz', 'Lockdown-REL1_35-b307d20.tar.gz');" && \
+    tar -xvf Lockdown-REL1_35-b307d20.tar.gz -C /var/www/html/wiki/extensions && \
+    rm -rf Lockdown-REL1_35-b307d20.tar.gz
 
 # Nice to have extensions
-RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/Math-REL1_34-b1a022f.tar.gz', 'Math-REL1_34-b1a022f.tar.gz');" && \
-    tar -xzf Math-REL1_34-b1a022f.tar.gz -C /var/www/html/wiki/extensions && \
-    rm -rf Math-REL1_34-b1a022f.tar.gz
+RUN php -r "copy('https://extdist.wmflabs.org/dist/extensions/Math-REL1_35-b5a8f57.tar.gz', 'Math-REL1_35-b5a8f57.tar.gz');" && \
+    tar -xzf Math-REL1_35-b5a8f57.tar.gz -C /var/www/html/wiki/extensions && \
+    rm -rf Math-REL1_35-b5a8f57.tar.gz
 
-RUN php -r "copy('https://translatewiki.net/mleb/MediaWikiLanguageExtensionBundle-2020.04.tar.bz2', 'MediaWikiLanguageExtensionBundle-2020.04.tar.bz2');" && \
-tar --wildcards -C /var/www/html/wiki/extensions -xjf MediaWikiLanguageExtensionBundle-2020.04.tar.bz2 --strip 1 extensions/* && \
-rm -rf MediaWikiLanguageExtensionBundle-2020.04.tar.bz2
+RUN php -r "copy('https://translatewiki.net/mleb/MediaWikiLanguageExtensionBundle-2020.07.tar.bz2', 'MediaWikiLanguageExtensionBundle-2020.07.tar.bz2');" && \
+tar --wildcards -C /var/www/html/wiki/extensions -xjf MediaWikiLanguageExtensionBundle-2020.07.tar.bz2 --strip 1 extensions/* && \
+rm -rf MediaWikiLanguageExtensionBundle-2020.07.tar.bz2
 
 
 # Wiki configuratoin

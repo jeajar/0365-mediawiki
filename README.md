@@ -2,7 +2,7 @@
 Development branch, moving to Traefik v2 and automatic metadata refresh for SimpleSAML
 
 ## Overview ##
-This docker image builds on top of the official [Mediawki image](https://hub.docker.com/_/mediawiki) version `1.34` and builds a list of useful and required mediawiki extentions for Office 365 SSO to work with the latest [SimpleSAMLphp](https://simplesamlphp.org/download) version `1.18.7` installation.
+This docker image builds on top of the official [Mediawki image](https://hub.docker.com/_/mediawiki) version `1.34` and builds a list of useful and required mediawiki extentions for Office 365 SSO to work with the latest [SimpleSAMLphp](https://simplesamlphp.org/download) version `1.18.8` installation.
 
 The docker compose stack uses Traefik `v2.3` , codename `picodon` as a reverse proxy and is configured to issue certificates autamatically with Let's Encrypt. If OV or EV certificates are a requirement, please refer to the [traefik documentation](https://docs.traefik.io/v1.7/configuration/backends/docker/). TLS 1.2 with a handlful of cyphers are allowed, older devices using TLS 1.1 will not work.
 
@@ -66,6 +66,9 @@ Read the xml and check for entityID at the very top. Use this value to set the `
 ## Treafik setup
 Comment out the line `caServer` on line `26` when ready to move into production.
 
+## Change cron secret
+Edit the `secret` field in the `mediawiki-o365/simplesamlphp/config/module_cron.php`. The secret is passed in clear text in a curl command, but should still be hard to guess and not shared. See notes bellow to configure cron after deploying the stack.
+
 ## Build the docker images
 cd into the `mediawiki-o365` folder in the git repo and build the image:
 ```
@@ -96,9 +99,9 @@ A few steps are required before. First we need to initialize docker swarm and ad
 ```
 docker swarm init --advertise-addr lo:2377
 ```
-Then create the overlay network
+Then create the overlay network. Making sure to pass the ``--attachable`` flag. This is required to enable mysql restores.
 ```
-docker network create -d overlay traefik-swarm
+docker network create -d overlay --attachable traefik-swarm
 ```
 To deploy this stack, we need to create docker secrets for the following sensible elements:
 * mysql_root_password
@@ -116,3 +119,25 @@ Using the command:
 ```
 
 Using a space before `echo` to avoid writing to the bash history and having our sensible information in plain text on the host.
+
+## Test and add automatic metadata refresher to cron
+The `wiki365` image is configured to automatically update the IdP metadata with the [metarefresh module in SimpleSAMLphp](https://simplesamlphp.org/docs/stable/metarefresh:simplesamlphp-automated_metadata). Nagigate 
+to the cron page and get the cron configuration, the URL is: https://wiki.${DOMAINNAME}/simplesaml/module.php/cron/croninfo.php. You will need admin priviledges to access this page. Copy the `hourly` command to the system's crontab with `crontab -e`. 
+### Force metadata refresh
+The curl command can also be used *ad-hoc* to force the metadata refresh, i.e. you need to do this when starting the services for the first time.
+
+## MySQL restores
+Use this command, replace the $vars witht the actual value. `docker run` can't use the docker secrets, leaving a blank space to bypass bash_history is a good practice here. 
+```
+$  docker run -e DB_SERVER=wiki_db -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY} -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} -e DB_USER=root -e DB_PASS=${MYSQL_ROOT_PW} -e DB_RESTORE_TARGET=s3://mediawiki/1-Mon-dfz-wiki-mysql_backup.gz --network traefik-swarm  mysql-backup:0.10.0
+```
+
+## Wiki images volume backup and restore
+Backup
+```
+docker run --rm -v wiki365_images:/source:ro busybox tar -czC /source . > wiki-images.tar.gz
+```
+Restore:
+```
+docker run --rm -i -v wiki365_images:/target busybox tar -xzC /target < wiki-images.tar.gz
+```
