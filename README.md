@@ -2,7 +2,7 @@
 Development branch, moving to Traefik v2 and automatic metadata refresh for SimpleSAML
 
 ## Overview ##
-This docker image builds on top of the official [Mediawki image](https://hub.docker.com/_/mediawiki) version `1.34` and builds a list of useful and required mediawiki extentions for Office 365 SSO to work with the latest [SimpleSAMLphp](https://simplesamlphp.org/download) version `1.18.8` installation.
+This docker image builds on top of the official [Mediawki image](https://hub.docker.com/_/mediawiki) version `1.35` and builds a list of useful and required mediawiki extentions for Office 365 SSO to work with the latest [SimpleSAMLphp](https://simplesamlphp.org/download) version `1.18.8` installation.
 
 The docker compose stack uses Traefik `v2.3` , codename `picodon` as a reverse proxy and is configured to issue certificates autamatically with Let's Encrypt. If OV or EV certificates are a requirement, please refer to the [traefik documentation](https://docs.traefik.io/v1.7/configuration/backends/docker/). TLS 1.2 with a handlful of cyphers are allowed, older devices using TLS 1.1 will not work.
 
@@ -20,7 +20,7 @@ __Nice to have included in this image__
 The [mysql-backup](https://github.com/databacker/mysql-backup) container connects to a s3 compatible endpoint and make regular database backups
 
 ### Requirements ###
-You need a system with `docker-ce` and `docker-compose` installed.
+You need a system with `docker-ce` installed.
 
 ## First steps and testing ##
 First, clone this repository:
@@ -42,6 +42,8 @@ SIMPLESAML_PATH=/simplesaml
 WIKI_EMAIL=wiki@example.com
 FEDERATION_URL=https://login.microsoftonline.com/{UUID}/federationmetadata/2007-06/federationmetadata.xml
 ```
+If using other s3 compatible storage, the var `AWS_ENDPOINT_URL` needs to be set.
+
 ## Configure Office365
 In the Office365 Admin control:
 `Azure Active Directory > App Registration > New registration`
