@@ -42,7 +42,7 @@ SIMPLESAML_PATH=/simplesaml
 WIKI_EMAIL=wiki@example.com
 FEDERATION_URL=https://login.microsoftonline.com/{UUID}/federationmetadata/2007-06/federationmetadata.xml
 ```
-If using other s3 compatible storage, the var `AWS_ENDPOINT_URL` needs to be set.
+If using other s3 compatible storage like linode or Digital Ocean, the var `AWS_ENDPOINT_URL` needs to be set.
 
 ## Configure Office365
 In the Office365 Admin control:
@@ -51,7 +51,7 @@ Create a new app registration with the following setting:
 
 * Accounts in this organizational directory only 
 
-Copy the Application (client) ID to set the `MS_ENTITYID` environment variable prefixed by `spn:`
+Copy the Application (client) ID to set the `MS_ENTITYID` environment variable prefixed by `spn:`. This needs to be set as a docker secret, see bellow.
 ```
 Example:
 MS_ENTITYID=spn:123a456-bb77-1234-828e-4353245h3245
@@ -74,7 +74,7 @@ Edit the `secret` field in the `mediawiki-o365/simplesamlphp/config/module_cron.
 ## Build the docker images
 cd into the `mediawiki-o365` folder in the git repo and build the image:
 ```
-docker build --tag mediawiki-o365:${STACK_VERSION} .
+docker build --tag mediawiki-o365:1.35a .
 ```
 Next, cd inside the `mysql-backup` folder and build the image
 ```
@@ -143,3 +143,15 @@ Restore:
 ```
 docker run --rm -i -v wiki365_images:/target busybox tar -xzC /target < wiki-images.tar.gz
 ```
+
+## Cron jobs
+Two cron commands should be added to the main user's crontab with `crontab -e`
+SimpleSAMLphp metarefresh:
+```
+ 01 * * * * curl --silent "https://wiki.difuze.com/simplesaml/module.php/cron/cron.php?key=Passably-Bride-Omit5&tag=hourly" > /dev/null 2>&1
+```
+And the wiki images docker volume backup to s3 (Use whatever s3 path you set earlier)
+```
+0 1 * * * docker run --rm -v wiki365_images:/source:ro busybox tar -czC /source . > wiki-images.tar.gz && aws s3 cp wiki-images.tar.gz s3://wiki-difuze-db-backup/
+```
+The aws cli needs to be configured with the API key and secret with ```aws configure```

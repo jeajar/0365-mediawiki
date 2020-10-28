@@ -4,3 +4,4 @@
 */log
 *.bak*
 */acme
+*.tar.gz
